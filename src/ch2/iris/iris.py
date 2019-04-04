@@ -9,7 +9,7 @@ from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 
 # アヤメデータの読み込み --- (*1)
-iris_data = pd.read_csv("iris.csv", encoding="utf-8")
+iris_data = pd.read_csv("./src/ch2/iris/iris.csv", encoding="utf-8")
 
 # アヤメデータをラベルと入力データに分離する --- (*2)
 # DataFrameオブジェクトのloc()を使って、データを分類している 2018-10-09 09:25:01
