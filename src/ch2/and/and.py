@@ -1,10 +1,15 @@
+# %%
+
+# 2018-10-08
+# and.py
+
 # ライブラリのインポート --- (*1)
-from sklearn.svm import LinearSVC
-from sklearn.metrics import accuracy_score
+from sklearn.svm import LinearSVC  # LinerSVCアルゴリズムを利用するためのパッケージ
+from sklearn.metrics import accuracy_score  # テスト結果を評価するためのパッケージ
 
 # 学習用のデータと結果の準備 --- (*2)
 # X , Y
-learn_data = [[0,0], [1,0], [0,1], [1,1]]
+learn_data = [[0, 0], [1, 0], [0, 1], [1, 1]]
 # X and Y
 learn_label = [0, 0, 0, 1]
 
@@ -15,9 +20,9 @@ clf = LinearSVC()
 clf.fit(learn_data, learn_label)
 
 # テストデータによる予測 --- (*5)
-test_data = [[0,0], [1,0], [0,1], [1,1]]
+test_data = [[0, 0], [1, 0], [0, 1], [1, 1]]
 test_label = clf.predict(test_data)
 
 # 予測結果の評価 --- (*6)
-print(test_data , "の予測結果：" ,  test_label)
-print("正解率 = " , accuracy_score([0, 0, 0, 1], test_label))
+print(test_data, "の予測結果：", test_label)
+print("正解率 = ", accuracy_score([0, 0, 0, 1], test_label))

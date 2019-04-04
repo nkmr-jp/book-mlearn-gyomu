@@ -14,3 +14,8 @@
 - 書籍の正誤表 → https://kujirahand.com/blog/go.php?764
 
 
+# memoブランチについて
+
+- 個人の学習用メモ
+- ローカルのほうが作業しやすいのでGoogle colab でメモしながら途中までやっていたものを移行
+- PyCharmの `Scientific モード` で実行できるように `# %%` でセルを指定
