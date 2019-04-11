@@ -1,5 +1,9 @@
+# 2018-10-12
+# heikin-tuki.py
+
 import matplotlib.pyplot as plt
 import pandas as pd
+
 # CSVを読み込む ---(*1)
 df = pd.read_csv("kion10y.csv", encoding="utf-8")
 # 月ごとに平均を求める ---(*2)
@@ -10,4 +14,3 @@ print(gg)
 gg.plot()
 plt.savefig("tenki-heikin-tuki.png")
 plt.show()
-
