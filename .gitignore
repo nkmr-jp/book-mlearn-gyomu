@@ -108,4 +108,5 @@ venv.bak/
 /*.csv
 /*.jpg
 /*.xml
+/*.pkl
 
