@@ -1,3 +1,7 @@
+# 2018-10-18
+# p.138
+# rotate-test.py
+
 import matplotlib.pyplot as plt
 import cv2
 from scipy import ndimage
@@ -10,7 +14,7 @@ img = cv2.imread("girl.jpg")
 # 顔検出を実行し、印をつける
 def face_detect(img):
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    face_list = cascade.detectMultiScale(img_gray, minSize=(300,300))
+    face_list = cascade.detectMultiScale(img_gray, minSize=(350,350))
     # 認識した部分に印をつける
     for (x,y,w,h) in face_list:
         print("顔の座標=", x, y, w, h)
@@ -21,12 +25,19 @@ def face_detect(img):
 for i in range(0, 9):
     ang = i * 10
     print("---" + str(ang) + "---")
-    img_r = ndimage.rotate(img, ang)
+    img_r = ndimage.rotate(img, ang) # scipyのモジュール。回転させるやつ。
     face_detect(img_r)
-    plt.subplot(3, 3, i + 1)
+
+    # 画像の表示設定
+    plt.subplot(3, 3, i + 1) # 行, 列, 何番目
     plt.axis("off")
-    plt.title("angle=" + str(ang))
+    plt.title("angle=" + str(ang)) # タイトルも設定できる
     plt.imshow(cv2.cvtColor(img_r, cv2.COLOR_BGR2RGB))
-        
+
 plt.show()
 
+# メモ
+# pyplot便利。
+#
+# OpenCV便利。顔検出できる。cascade_fileほかにもいろいろある。
+# 明度情報はグレースケールしてから取得
