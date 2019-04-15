@@ -1,21 +1,27 @@
+# 2018-10-25
+
 import cv2, os, copy
 from sklearn.externals import joblib
 
 # 学習済みデータを取り出す
-clf = joblib.load("fish.pkl")
+# 2019-04-15
+# fish_train.pyを飛ばしたので元からある学習済みのデータを使う。
+clf = joblib.load("./src/ch3/5_video/fish.pkl")
 output_dir = "./bestshot"
-img_last = None # 前回の画像
-fish_th = 3 # 画像を出力するかどうかのしきい値
+img_last = None  # 前回の画像
+fish_th = 3  # 画像を出力するかどうかのしきい値
 count = 0
 frame_count = 0
-if not os.path.isdir(output_dir): os.mkdir(output_dir)
+if not os.path.isdir(output_dir):
+    os.mkdir(output_dir)
 
 # 動画ファイルから入力を開始 --- (*1)
 cap = cv2.VideoCapture("fish.mp4")
 while True:
     # 画像を取得
     is_ok, frame = cap.read()
-    if not is_ok: break
+    if not is_ok:
+        break
     frame = cv2.resize(frame, (640, 360))
     frame2 = copy.copy(frame)
     frame_count += 1
@@ -26,31 +32,42 @@ while True:
     if not img_last is None:
         # 差分を得る
         frame_diff = cv2.absdiff(img_last, img_b)
-        cnts = cv2.findContours(frame_diff, 
-            cv2.RETR_EXTERNAL,
-            cv2.CHAIN_APPROX_SIMPLE)[1]
+        # OpenCV3以下の場合は[1]
+        cnts = cv2.findContours(frame_diff, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[
+            0
+        ]
         # 差分領域に魚が映っているか調べる
         fish_count = 0
         for pt in cnts:
             x, y, w, h = cv2.boundingRect(pt)
-            if w < 100 or w > 500: continue # ノイズを除去
+            if w < 100 or w > 500:
+                continue  # ノイズを除去
             # 抽出した領域に魚が映っているか確認 --- (*3)
-            imgex = frame[y:y+h, x:x+w]
+            imgex = frame[y : y + h, x : x + w]
             imagex = cv2.resize(imgex, (64, 32))
-            image_data = imagex.reshape(-1, )
-            pred_y = clf.predict([image_data]) # --- (*4)
+            image_data = imagex.reshape(-1)
+            pred_y = clf.predict([image_data])  # --- (*4)
             if pred_y[0] == 1:
                 fish_count += 1
-                cv2.rectangle(frame2, (x, y), (x+w, y+h), (0,255,0), 2)
+                cv2.rectangle(frame2, (x, y), (x + w, y + h), (0, 255, 0), 2)
         # 魚が映っているか？ --- (*5)
         if fish_count > fish_th:
             fname = output_dir + "/fish" + str(count) + ".jpg"
             cv2.imwrite(fname, frame)
             count += 1
-    cv2.imshow('FISH!', frame2)
-    if cv2.waitKey(1) == 13: break
+        # cv2.imshow('FISH!', frame2)  # これを使うとランタイムエラーになる。
+    if cv2.waitKey(1) == 13:
+        break
     img_last = img_b
 cap.release()
 cv2.destroyAllWindows()
 print("ok", count, "/", frame_count)
 
+# ランタイムが異常終了してしまう。
+# おもすぎるのか？？
+# メモリ不足かな：https://github.com/googlecolab/colabtools/issues/156#issuecomment-418846954
+# もうちょっと粘ってみてむりなら次いこう 09:28:37
+
+# 2018-10-26
+# cv2.imshow('FISH!', frame2) これをコメントアウトしたら動いた
+# ダウンロードしてみたら結構ちゃんと選定できていた。

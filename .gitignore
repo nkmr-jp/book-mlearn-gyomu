@@ -109,4 +109,6 @@ venv.bak/
 /*.jpg
 /*.xml
 /*.pkl
-
+/*.mp4
+/exfish
+/bestshot

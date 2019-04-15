@@ -1,3 +1,15 @@
+# 2018-10-23
+# 機械学習で動画に熱帯魚が映っているベストな場面を見つけよう
+# 手動で画像分類をする。まあこれも練習だな。やろう。
+
+# 2018-10-2409:30:33
+# とりあえず魚の画像は抽出した。
+# 次は魚じゃない画像
+
+
+# p.175
+# fish_train.py
+
 import cv2
 import os, glob
 from sklearn.model_selection import train_test_split
@@ -8,11 +20,12 @@ from sklearn.externals import joblib
 
 # 画像の学習サイズやパスを指定
 image_size = (64, 32)
-path = os.path.dirname(os.path.abspath(__file__))
-path_fish = path + '/fish'
-path_nofish = path + '/nofish'
-x = [] # 画像データ
-y = [] # ラベルデータ
+# path = os.path.dirname(os.path.abspath(__file__))
+
+path_fish = 'fish_images/fish'
+path_nofish = 'fish_images/nofish'
+x = []  # 画像データ
+y = []  # ラベルデータ
 
 # 画像データを読み込んで配列に追加 --- (*1)
 def read_dir(path, label):
@@ -20,9 +33,10 @@ def read_dir(path, label):
     for f in files:
         img = cv2.imread(f)
         img = cv2.resize(img, image_size)
-        img_data = img.reshape(-1, ) # 一次元に展開
+        img_data = img.reshape(-1)  # 一次元に展開
         x.append(img_data)
         y.append(label)
+
 
 # 画像データを読み込む
 read_dir(path_nofish, 0)
@@ -41,3 +55,11 @@ print(accuracy_score(y_test, y_pred))
 
 # データを保存 --- (*5)
 joblib.dump(clf, 'fish.pkl')
+
+
+# メモ
+# 手動分類結構たいへんだったな
+# 前処理が一番時間かかるか。やっぱ。
+
+# 2019-04-15
+# ここは面倒なので飛ばす。
